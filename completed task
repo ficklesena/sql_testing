@@ -1,0 +1,7 @@
+SELECT v1.vacancy_id, v1.name, v1.is_active, v1.time_ as valid_from, IFNULL(v2.time_, '01.01.5999') as valid_to
+FROM vacancy as v1
+LEFT JOIN (SELECT time_
+           FROM vacancy
+           WHERE time_ NOT IN (select MIN(time_) from vacancy)
+           ORDER BY time_) v2 ON v1.time_ < v2.time_
+GROUP BY v1.time_
